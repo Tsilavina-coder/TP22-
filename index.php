@@ -13,8 +13,20 @@ if ($conn->connect_error) {
     die("Échec de la connexion à la base de données : " . $conn->connect_error);
 }
 
-// Requête pour récupérer la liste des départements
-$sql = "SELECT dept_no, dept_name FROM departments";
+// Requête pour récupérer la liste des départements avec le nom du manager en cours
+$sql = "
+SELECT d.dept_no, d.dept_name, CONCAT(e.first_name, ' ', e.last_name) AS manager_name
+FROM departments d
+LEFT JOIN dept_manager dm ON d.dept_no = dm.dept_no
+LEFT JOIN employees e ON dm.emp_no = e.emp_no
+WHERE dm.to_date = (
+    SELECT MAX(to_date)
+    FROM dept_manager
+    WHERE dept_no = d.dept_no
+)
+ORDER BY d.dept_no
+";
+
 $result = $conn->query($sql);
 
 ?>
@@ -23,29 +35,34 @@ $result = $conn->query($sql);
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Liste des départements</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../TP22-/bootstrap-5.3.5-dist/css/bootstrap.min.css">
+    <script src="../TP22-/bootstrap-5.3.5-dist/js/bootstrap.bundle.min.js"></script>
+    <title>Document</title>
 </head>
 <body>
     <table border="1" cellpadding="8" cellspacing="0">
-        <caption>Liste des départements</caption>
+        <caption>Liste des départements avec leur manager en cours</caption>
         <thead>
             <tr>
                 <th>Numéro du département</th>
                 <th>Nom du département</th>
+                <th>Nom du manager</th>
             </tr>
         </thead>
         <tbody>
             <?php
             if ($result && $result->num_rows > 0) {
-                // Affichage des départements
+                // Affichage des départements avec managers
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>" . htmlspecialchars($row['dept_no']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['dept_name']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['manager_name'] ?? 'Non défini') . "</td>";
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='2'>Aucun département trouvé.</td></tr>";
+                echo "<tr><td colspan='3'>Aucun département trouvé.</td></tr>";
             }
             // Fermeture de la connexion
             $conn->close();
