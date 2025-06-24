@@ -56,9 +56,12 @@ $result = $conn->query($sql);
                 // Affichage des départements avec managers
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
-                    echo "<td>" . htmlspecialchars($row['dept_no']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['dept_name']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['manager_name'] ?? 'Non défini') . "</td>";
+                    $dept_no = htmlspecialchars($row['dept_no']);
+                    $dept_name = htmlspecialchars($row['dept_name']);
+                    $manager_name = htmlspecialchars($row['manager_name'] ?? 'Non défini');
+                    echo "<td><a href='List_employees.php?dept_no={$dept_no}'>{$dept_no}</a></td>";
+                    echo "<td><a href='List_employees.php?dept_no={$dept_no}'>{$dept_name}</a></td>";
+                    echo "<td>{$manager_name}</td>";
                     echo "</tr>";
                 }
             } else {
