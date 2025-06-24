@@ -1,39 +1,13 @@
 <?php
-// Récupération du numéro de département depuis le paramètre GET
+require_once 'inc/function/db_functions.php';
+
 if (!isset($_GET['dept_no']) || empty($_GET['dept_no'])) {
     die("Numéro de département non spécifié.");
 }
 
 $dept_no = $_GET['dept_no'];
 
-// Connexion à la base de données MySQL
-$host = 'localhost';
-$user = 'root';
-$password = '';
-$dbname = 'employees';
-
-// Création de la connexion
-$conn = new mysqli($host, $user, $password, $dbname);
-
-// Vérification de la connexion
-if ($conn->connect_error) {
-    die("Échec de la connexion à la base de données : " . $conn->connect_error);
-}
-
-// Requête pour récupérer les employés du département donné
-$sql = "
-SELECT e.emp_no, e.first_name, e.last_name, e.hire_date
-FROM employees e
-INNER JOIN dept_emp de ON e.emp_no = de.emp_no
-WHERE de.dept_no = ?
-ORDER BY e.emp_no
-";
-
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $dept_no);
-$stmt->execute();
-$result = $stmt->get_result();
-
+$employees = get_employees_by_department($dept_no);
 ?>
 
 <!DOCTYPE html>
@@ -55,20 +29,20 @@ $result = $stmt->get_result();
         </thead>
         <tbody>
             <?php
-            if ($result && $result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . htmlspecialchars($row['emp_no']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['first_name']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['last_name']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['hire_date']) . "</td>";
-                    echo "</tr>";
+            if (!empty($employees)) {
+                foreach ($employees as $row) {
+                    ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['emp_no']) ?></td>
+                        <td><?= htmlspecialchars($row['first_name']) ?></td>
+                        <td><?= htmlspecialchars($row['last_name']) ?></td>
+                        <td><?= htmlspecialchars($row['hire_date']) ?></td>
+                    </tr>
+                    <?php
                 }
             } else {
                 echo "<tr><td colspan='4'>Aucun employé trouvé pour ce département.</td></tr>";
             }
-            $stmt->close();
-            $conn->close();
             ?>
         </tbody>
     </table>
