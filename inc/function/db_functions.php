@@ -69,4 +69,56 @@ function get_employees_by_department($dept_no) {
     $conn->close();
     return $employees;
 }
-?>
+function get_salary_history($emp_no) {
+    $conn = get_db_connection();
+
+    $sql = "
+    SELECT salary, from_date, to_date
+    FROM salaries
+    WHERE emp_no = ?
+    ORDER BY from_date DESC
+    ";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $emp_no);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $salaries = [];
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $salaries[] = $row;
+        }
+        $result->free();
+    }
+    $stmt->close();
+    $conn->close();
+    return $salaries;
+}
+
+function get_title_history($emp_no) {
+    $conn = get_db_connection();
+
+    $sql = "
+    SELECT title, from_date, to_date
+    FROM titles
+    WHERE emp_no = ?
+    ORDER BY from_date DESC
+    ";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $emp_no);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $titles = [];
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $titles[] = $row;
+        }
+        $result->free();
+    }
+    $stmt->close();
+    $conn->close();
+    return $titles;
+}
