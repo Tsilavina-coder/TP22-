@@ -44,5 +44,8 @@ $departments = get_departments_with_managers();
             ?>
         </tbody>
     </table>
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="search_form.php" class="btn btn-primary">Recherche avancée d'employés</a>
+    </div>
 </body>
 </html>
