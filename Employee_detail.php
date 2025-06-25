@@ -25,6 +25,11 @@ $stmt->close();
 $conn->close();
 ?>
 
+<?php
+$salaries = get_salary_history($emp_no);
+$titles = get_title_history($emp_no);
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -41,6 +46,55 @@ $conn->close();
         <li><strong>Genre :</strong> <?= htmlspecialchars($employee['gender']) ?></li>
         <li><strong>Date d'embauche :</strong> <?= htmlspecialchars($employee['hire_date']) ?></li>
     </ul>
+
+    <h2>Historique des salaires</h2>
+    <table border="1" cellpadding="8" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Salaire</th>
+                <th>Date début</th>
+                <th>Date fin</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (!empty($salaries)) : ?>
+                <?php foreach ($salaries as $salary) : ?>
+                    <tr>
+                        <td><?= htmlspecialchars($salary['salary']) ?></td>
+                        <td><?= htmlspecialchars($salary['from_date']) ?></td>
+                        <td><?= htmlspecialchars($salary['to_date']) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else : ?>
+                <tr><td colspan="3">Aucun historique de salaire trouvé.</td></tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+
+    <h2>Historique des emplois occupés</h2>
+    <table border="1" cellpadding="8" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Intitulé du poste</th>
+                <th>Date début</th>
+                <th>Date fin</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (!empty($titles)) : ?>
+                <?php foreach ($titles as $title) : ?>
+                    <tr>
+                        <td><?= htmlspecialchars($title['title']) ?></td>
+                        <td><?= htmlspecialchars($title['from_date']) ?></td>
+                        <td><?= htmlspecialchars($title['to_date']) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else : ?>
+                <tr><td colspan="3">Aucun historique d'emploi trouvé.</td></tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+
     <p><a href="List_employees.php?dept_no=<?php echo urlencode($_GET['dept_no'] ?? ''); ?>">Retour à la liste des employés</a></p>
     <p><a href="index.php">Retour à la liste des départements</a></p>
 </body>
