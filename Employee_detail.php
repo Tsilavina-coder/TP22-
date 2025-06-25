@@ -35,6 +35,9 @@ $titles = get_title_history($emp_no);
 <head>
     <meta charset="UTF-8">
     <title>Fiche de l'employé <?= htmlspecialchars($emp_no) ?></title>
+    <link rel="stylesheet" href="../TP22-/bootstrap-5.3.5-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="../TP22-/bootstrap-5.3.5-dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     <h1>Fiche de l'employé <?= htmlspecialchars($emp_no) ?></h1>

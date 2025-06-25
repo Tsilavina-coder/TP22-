@@ -19,14 +19,18 @@ $dept_no = null;
 $employee_name = null;
 $age_min = null;
 $age_max = null;
+$page = 0;
+$limit = 20;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dept_no = $_POST['dept_no'] ?? null;
     $employee_name = $_POST['employee_name'] ?? null;
     $age_min = $_POST['age_min'] ?? null;
     $age_max = $_POST['age_max'] ?? null;
+    $page = isset($_POST['page']) ? max(0, (int)$_POST['page']) : 0;
 
-    $search_results = search_employees($dept_no, $employee_name, $age_min, $age_max);
+    $offset = $page * $limit;
+    $search_results = search_employees($dept_no, $employee_name, $age_min, $age_max, $offset, $limit);
 }
 ?>
 
@@ -36,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <title>Recherche d'employés</title>
     <link rel="stylesheet" href="../TP22-/bootstrap-5.3.5-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container mt-4">
@@ -93,9 +98,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
-                </table>
+        </table>
             <?php else: ?>
                 <p>Aucun employé ne correspond aux critères de recherche.</p>
+            <?php endif; ?>
+            <?php if (!empty($search_results)): ?>
+                <form method="post" action="search_form.php" style="text-align: center; margin-top: 20px;">
+                    <input type="hidden" name="dept_no" value="<?= htmlspecialchars($dept_no ?? '') ?>">
+                    <input type="hidden" name="employee_name" value="<?= htmlspecialchars($employee_name ?? '') ?>">
+                    <input type="hidden" name="age_min" value="<?= htmlspecialchars($age_min ?? '') ?>">
+                    <input type="hidden" name="age_max" value="<?= htmlspecialchars($age_max ?? '') ?>">
+                    <input type="hidden" name="page" value="<?= $page + 1 ?>">
+                    <button type="submit" class="btn btn-secondary">Suivant</button>
+                </form>
             <?php endif; ?>
         <?php endif; ?>
     </div>

@@ -10,6 +10,7 @@ $departments = get_departments_with_managers();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../TP22-/bootstrap-5.3.5-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
     <script src="../TP22-/bootstrap-5.3.5-dist/js/bootstrap.bundle.min.js"></script>
     <title>Liste des départements avec managers</title>
 </head>
