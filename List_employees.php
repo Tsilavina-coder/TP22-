@@ -33,7 +33,7 @@ $employees = get_employees_by_department($dept_no);
                 foreach ($employees as $row) {
                     ?>
                     <tr>
-                        <td><?= htmlspecialchars($row['emp_no']) ?></td>
+                        <td><a href="Employee_detail.php?emp_no=<?= htmlspecialchars($row['emp_no']) ?>"><?= htmlspecialchars($row['emp_no']) ?></a></td>
                         <td><?= htmlspecialchars($row['first_name']) ?></td>
                         <td><?= htmlspecialchars($row['last_name']) ?></td>
                         <td><?= htmlspecialchars($row['hire_date']) ?></td>
