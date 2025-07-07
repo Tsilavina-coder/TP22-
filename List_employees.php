@@ -23,6 +23,7 @@ $employees = search_employees($dept_no, null, null, null, $offset, $limit);
     <script src="../TP22-/bootstrap-5.3.5-dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+    <?php include 'inc/navbar.php'; ?>
     <h1>Liste des employés du département <?= htmlspecialchars($dept_no) ?></h1>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
@@ -40,7 +41,7 @@ $employees = search_employees($dept_no, null, null, null, $offset, $limit);
                         <td><a href="Employee_detail.php?emp_no=<?= htmlspecialchars($row['emp_no']) ?>"><?= htmlspecialchars($row['emp_no']) ?></a></td>
                         <td><?= htmlspecialchars($row['first_name']) ?></td>
                         <td><?= htmlspecialchars($row['last_name']) ?></td>
-                        <td><?= htmlspecialchars($row['hire_date']) ?></td>
+                        <td><?= (new DateTime($row['hire_date']))->format('d/m/y') ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php else : ?>

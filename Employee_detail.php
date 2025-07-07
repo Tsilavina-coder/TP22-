@@ -1,4 +1,4 @@
-<?php
+ <?php
 require_once 'inc/function/db_functions.php';
 
 if (!isset($_GET['emp_no']) || empty($_GET['emp_no'])) {
@@ -21,6 +21,25 @@ if ($result && $result->num_rows === 1) {
     die("Employé non trouvé.");
 }
 
+// Requête pour récupérer l'emploi le plus long (en durée) de l'employé
+$sql_longest_title = "
+    SELECT title, from_date, to_date, DATEDIFF(COALESCE(to_date, CURDATE()), from_date) AS duration
+    FROM titles
+    WHERE emp_no = ?
+    ORDER BY duration DESC
+    LIMIT 1
+";
+$stmt_longest = $conn->prepare($sql_longest_title);
+$stmt_longest->bind_param("i", $emp_no);
+$stmt_longest->execute();
+$result_longest = $stmt_longest->get_result();
+
+$longest_title = null;
+if ($result_longest && $result_longest->num_rows === 1) {
+    $longest_title = $result_longest->fetch_assoc();
+}
+
+$stmt_longest->close();
 $stmt->close();
 $conn->close();
 ?>
@@ -45,9 +64,9 @@ $titles = get_title_history($emp_no);
         <li><strong>Numéro employé :</strong> <?= htmlspecialchars($employee['emp_no']) ?></li>
         <li><strong>Prénom :</strong> <?= htmlspecialchars($employee['first_name']) ?></li>
         <li><strong>Nom :</strong> <?= htmlspecialchars($employee['last_name']) ?></li>
-        <li><strong>Date de naissance :</strong> <?= htmlspecialchars($employee['birth_date']) ?></li>
+        <li><strong>Date de naissance :</strong> <?= (new DateTime($employee['birth_date']))->format('d/m/y') ?></li>
         <li><strong>Genre :</strong> <?= htmlspecialchars($employee['gender']) ?></li>
-        <li><strong>Date d'embauche :</strong> <?= htmlspecialchars($employee['hire_date']) ?></li>
+        <li><strong>Date d'embauche :</strong> <?= (new DateTime($employee['hire_date']))->format('d/m/y') ?></li>
     </ul>
 
     <h2>Historique des salaires</h2>
@@ -64,8 +83,8 @@ $titles = get_title_history($emp_no);
                 <?php foreach ($salaries as $salary) : ?>
                     <tr>
                         <td><?= htmlspecialchars($salary['salary']) ?></td>
-                        <td><?= htmlspecialchars($salary['from_date']) ?></td>
-                        <td><?= htmlspecialchars($salary['to_date']) ?></td>
+                        <td><?= (new DateTime($salary['from_date']))->format('d/m/y') ?></td>
+                        <td><?= (new DateTime($salary['to_date']))->format('d/m/y') ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php else : ?>
@@ -73,6 +92,30 @@ $titles = get_title_history($emp_no);
             <?php endif; ?>
         </tbody>
     </table>
+
+    <h2>Emploi le plus long</h2>
+    <?php if ($longest_title): ?>
+        <table border="1" cellpadding="8" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Intitulé du poste</th>
+                    <th>Date début</th>
+                    <th>Date fin</th>
+                    <th>Durée (jours)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><?= htmlspecialchars($longest_title['title']) ?></td>
+                    <td><?= (new DateTime($longest_title['from_date']))->format('d/m/y') ?></td>
+                    <td><?= (new DateTime($longest_title['to_date']))->format('d/m/y') ?></td>
+                    <td><?= htmlspecialchars($longest_title['duration']) ?></td>
+                </tr>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p>Aucun emploi trouvé.</p>
+    <?php endif; ?>
 
     <h2>Historique des emplois occupés</h2>
     <table border="1" cellpadding="8" cellspacing="0">
@@ -88,8 +131,8 @@ $titles = get_title_history($emp_no);
                 <?php foreach ($titles as $title) : ?>
                     <tr>
                         <td><?= htmlspecialchars($title['title']) ?></td>
-                        <td><?= htmlspecialchars($title['from_date']) ?></td>
-                        <td><?= htmlspecialchars($title['to_date']) ?></td>
+                        <td><?= (new DateTime($title['from_date']))->format('d/m/y') ?></td>
+                        <td><?= (new DateTime($title['to_date']))->format('d/m/y') ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php else : ?>

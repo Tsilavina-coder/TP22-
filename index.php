@@ -1,7 +1,17 @@
 <?php
 require_once 'inc/function/db_functions.php';
 
-$departments = get_departments_with_managers();
+$conn = get_db_connection();
+$sql = "SELECT dept_no, dept_name, manager_name, employee_count FROM join_table_dept_manag_emp ORDER BY dept_name";
+$result = $conn->query($sql);
+$departments = [];
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $departments[] = $row;
+    }
+    $result->free();
+}
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -15,13 +25,14 @@ $departments = get_departments_with_managers();
     <title>Liste des départements avec managers</title>
 </head>
 <body>
+    <?php include 'inc/navbar.php'; ?>
     <table border="1" cellpadding="8" cellspacing="0">
         <caption>Liste des départements avec leur manager en cours</caption>
         <thead>
             <tr>
-                <th>Numéro du département</th>
                 <th>Nom du département</th>
                 <th>Nom du manager</th>
+                <th>Nombre d'employés</th>
             </tr>
         </thead>
         <tbody>
@@ -33,9 +44,9 @@ $departments = get_departments_with_managers();
                     $manager_name = htmlspecialchars($row['manager_name'] ?? 'Non défini');
                     ?>
                     <tr>
-                        <td><a href="List_employees.php?dept_no=<?= $dept_no ?>"><?= $dept_no ?></a></td>
                         <td><a href="List_employees.php?dept_no=<?= $dept_no ?>"><?= $dept_name ?></a></td>
                         <td><?= $manager_name ?></td>
+                        <td><?= $row['employee_count'] ?></td>
                     </tr>
                     <?php
                 }

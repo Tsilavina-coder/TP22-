@@ -41,8 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Recherche d'employés</title>
     <link rel="stylesheet" href="../TP22-/bootstrap-5.3.5-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <script src="../TP22-/bootstrap-5.3.5-dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+    <?php include 'inc/navbar.php'; ?>
     <div class="container mt-4">
         <h1>Recherche d'employés</h1>
         <form method="post" action="search_form.php" class="mb-4">
@@ -69,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="age_max" class="form-label">Âge maximum</label>
                 <input type="number" name="age_max" id="age_max" class="form-control" min="0" value="<?= htmlspecialchars($age_max ?? '') ?>">
             </div>
-            <button type="submit" class="btn btn-primary">Rechercher</button>
+            <button type="submit" class="btn btn-primary">Rechercher <i class="fas fa-search"></i></button>
         </form>
 
         <?php if ($_SERVER['REQUEST_METHOD'] === 'POST'): ?>
@@ -92,9 +94,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <td><a href="Employee_detail.php?emp_no=<?= htmlspecialchars($employee['emp_no']) ?>"><?= htmlspecialchars($employee['emp_no']) ?></a></td>
                                 <td><?= htmlspecialchars($employee['first_name']) ?></td>
                                 <td><?= htmlspecialchars($employee['last_name']) ?></td>
-                                <td><?= htmlspecialchars($employee['birth_date']) ?></td>
+                                <td><?= (new DateTime($employee['birth_date']))->format('d/m/y') ?></td>
                                 <td><?= htmlspecialchars($employee['gender']) ?></td>
-                                <td><?= htmlspecialchars($employee['hire_date']) ?></td>
+                                <td><?= (new DateTime($employee['hire_date']))->format('d/m/y') ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
