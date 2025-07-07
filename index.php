@@ -37,13 +37,15 @@ $conn->close();
         </thead>
         <tbody>
             <?php
+            $new_manager_dept_no = $_GET['new_manager_dept_no'] ?? null;
             if (!empty($departments)) {
                 foreach ($departments as $row) {
                     $dept_no = htmlspecialchars($row['dept_no']);
                     $dept_name = htmlspecialchars($row['dept_name']);
                     $manager_name = htmlspecialchars($row['manager_name'] ?? 'Non défini');
+                    $highlight = ($new_manager_dept_no && $new_manager_dept_no === $row['dept_no']) ? ' style="background-color: #d4edda;"' : '';
                     ?>
-                    <tr>
+                    <tr<?= $highlight ?>>
                         <td><a href="List_employees.php?dept_no=<?= $dept_no ?>"><?= $dept_name ?></a></td>
                         <td><?= $manager_name ?></td>
                         <td><?= $row['employee_count'] ?></td>
