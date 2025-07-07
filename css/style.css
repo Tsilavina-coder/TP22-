@@ -227,26 +227,26 @@ footer {
 /* Override Bootstrap colors with Bordeaux red theme */
 
 :root {
-  --bs-primary: #7b2a2a;
-  --bs-primary-rgb: 123, 42, 42;
-  --bs-secondary: #5a1a1a;
-  --bs-secondary-rgb: 90, 26, 26;
-  --bs-success: #6b2b2b;
-  --bs-success-rgb: 107, 43, 43;
-  --bs-info: #b35a5a;
-  --bs-info-rgb: 179, 90, 90;
-  --bs-warning: #a03a3a;
-  --bs-warning-rgb: 160, 58, 58;
-  --bs-danger: #7b2a2a;
-  --bs-danger-rgb: 123, 42, 42;
-  --bs-light: #f4e9e9;
-  --bs-light-rgb: 244, 233, 233;
-  --bs-dark: #4b1d1d;
-  --bs-dark-rgb: 75, 29, 29;
+  --bs-primary: #2a7b42; /* primary green */
+  --bs-primary-rgb: 42, 123, 66;
+  --bs-secondary: #1a5a2a; /* dark green */
+  --bs-secondary-rgb: 26, 90, 42;
+  --bs-success: #2b6b43; /* success green */
+  --bs-success-rgb: 43, 107, 67;
+  --bs-info: #5ab35a; /* info green */
+  --bs-info-rgb: 90, 179, 90;
+  --bs-warning: #3aa03a; /* warning green */
+  --bs-warning-rgb: 58, 160, 58;
+  --bs-danger: #2a7b42; /* danger green */
+  --bs-danger-rgb: 42, 123, 66;
+  --bs-light: #000000; /* black */
+  --bs-light-rgb: 0, 0, 0;
+  --bs-dark: #1d1d1d; /* dark gray/black */
+  --bs-dark-rgb: 29, 29, 29;
 
-  /* Beige color variables */
-  --bs-beige: #f5f0e6;
-  --bs-beige-rgb: 245, 240, 230;
+  /* Beige color variables replaced with black shades */
+  --bs-beige: #1d1d1d;
+  --bs-beige-rgb: 29, 29, 29;
 }
 
 
@@ -333,7 +333,7 @@ a:hover, a:focus {
   }
 }
 
-/* Beige and Bordeaux red combination styles */
+/* Beige and Bordeaux red combination styles replaced with Green and Black combination styles */
 
 .bg-beige {
   background-color: var(--bs-beige) !important;
