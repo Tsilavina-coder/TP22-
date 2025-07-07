@@ -243,7 +243,12 @@ footer {
   --bs-light-rgb: 244, 233, 233;
   --bs-dark: #4b1d1d;
   --bs-dark-rgb: 75, 29, 29;
+
+  /* Beige color variables */
+  --bs-beige: #f5f0e6;
+  --bs-beige-rgb: 245, 240, 230;
 }
+
 
 body {
   background-color: var(--bs-light);
@@ -327,3 +332,52 @@ a:hover, a:focus {
     padding: 0.5rem 1rem;
   }
 }
+
+/* Beige and Bordeaux red combination styles */
+
+.bg-beige {
+  background-color: var(--bs-beige) !important;
+  color: var(--bs-dark) !important;
+}
+
+.text-beige {
+  color: var(--bs-beige) !important;
+}
+
+.border-beige {
+  border-color: var(--bs-beige) !important;
+}
+
+.beige-red {
+  background-color: var(--bs-beige);
+  color: var(--bs-primary);
+  border: 2px solid var(--bs-primary);
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.beige-red:hover {
+  background-color: var(--bs-primary);
+  color: var(--bs-beige);
+  border-color: var(--bs-beige);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-beige-red {
+  background-color: var(--bs-beige);
+  color: var(--bs-primary);
+  border: 1px solid var(--bs-primary);
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-beige-red:hover {
+  background-color: var(--bs-primary);
+  color: var(--bs-beige);
+  border-color: var(--bs-beige);
+  cursor: pointer;
+}
+
